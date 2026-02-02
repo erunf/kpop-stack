@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  map-etcher:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - DEBUG=false
+      - OUTPUT_DIR=/app/output
+    volumes:
+      # Persist cache for faster subsequent runs
+      - map-cache:/app/cache
+      # Persist output files
+      - map-output:/app/output
+      # Mount custom fonts if any
+      - ./fonts:/app/fonts:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  map-cache:
+  map-output:

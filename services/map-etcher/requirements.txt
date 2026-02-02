@@ -1,0 +1,25 @@
+# Map generation
+osmnx==1.9.3
+geopandas>=0.14.0
+shapely>=2.0.0
+networkx>=3.0
+
+# Image processing
+Pillow>=10.0.0
+cairosvg>=2.7.0
+svgwrite>=1.4.3
+
+# Geocoding
+geopy>=2.4.0
+
+# CLI
+click>=8.1.0
+rich>=13.0.0
+
+# API server
+flask>=3.0.0
+flask-cors>=4.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.31.0
