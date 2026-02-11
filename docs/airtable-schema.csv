@@ -1,0 +1,2 @@
+Etsy Receipt ID,Status,Customer Name,Customer Email,Shipping Address,Shipping City,Shipping State,Shipping Zip,Shipping Country,Map Address,Custom Text,Latitude,Longitude,Print File URL,Printify Order ID,Tracking Number,Tracking Carrier,Tracking URL,Error Message,Created At,Updated At,Processed At,Shipped At
+SAMPLE-001,pending,John Doe,john@example.com,"123 Main St",Springfield,IL,62701,USA,"225 Summit Ave, Summit NJ",Our First Home,40.7128,-74.0060,,,,,,,,,,
