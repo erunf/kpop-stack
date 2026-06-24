@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meltwater — Deep Competitive Analysis | Meeting Prep: Ant Cousins</title>
+<style>
+  :root{
+    --bg:#0e1320; --panel:#161d2e; --panel2:#1d2638; --ink:#e8edf6; --muted:#9aa7bd;
+    --line:#2a3650; --accent:#4f9cf9; --accent2:#7c5cff; --green:#3ecf8e; --amber:#f5b942;
+    --red:#ff6b6b; --chip:#23304a;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.55;font-size:15px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  header.hero{padding:38px 28px 26px;background:linear-gradient(135deg,#15203a,#0e1320 70%);border-bottom:1px solid var(--line)}
+  .hero h1{margin:0 0 6px;font-size:30px;letter-spacing:-.5px}
+  .hero .sub{color:var(--muted);font-size:15px;max-width:880px}
+  .hero .meta{margin-top:14px;font-size:13px;color:var(--muted)}
+  .wrap{display:flex;max-width:1400px;margin:0 auto}
+  nav{position:sticky;top:0;align-self:flex-start;width:240px;padding:22px 14px;height:100vh;overflow-y:auto;
+    border-right:1px solid var(--line);font-size:13.5px;flex-shrink:0}
+  nav a{display:block;color:var(--muted);padding:6px 10px;border-radius:7px;margin-bottom:2px}
+  nav a:hover{background:var(--panel2);color:var(--ink);text-decoration:none}
+  nav .navhead{color:#5d6b85;text-transform:uppercase;font-size:11px;letter-spacing:1px;margin:16px 10px 6px}
+  main{flex:1;padding:26px 34px 90px;max-width:1100px;min-width:0}
+  section{margin-bottom:42px;scroll-margin-top:18px}
+  h2{font-size:23px;border-bottom:2px solid var(--accent);padding-bottom:8px;margin:0 0 16px;letter-spacing:-.3px}
+  h3{font-size:17px;margin:22px 0 8px;color:#cfe0ff}
+  h4{font-size:14.5px;margin:16px 0 6px;color:var(--amber);text-transform:uppercase;letter-spacing:.5px}
+  p{margin:8px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0}
+  .grid{display:grid;gap:14px}
+  .grid2{grid-template-columns:1fr 1fr}
+  .grid3{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr}nav{display:none}}
+  ul{margin:8px 0;padding-left:20px}
+  li{margin:5px 0}
+  .chip{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:20px;
+    padding:3px 11px;font-size:12px;margin:3px 4px 3px 0;color:#cdd9ef}
+  .chip.g{background:rgba(62,207,142,.13);border-color:rgba(62,207,142,.4);color:#8af0c2}
+  .chip.r{background:rgba(255,107,107,.12);border-color:rgba(255,107,107,.4);color:#ffb3b3}
+  .chip.a{background:rgba(245,185,66,.12);border-color:rgba(245,185,66,.4);color:#ffd98a}
+  .chip.b{background:rgba(79,156,249,.12);border-color:rgba(79,156,249,.4);color:#a9ccff}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:#bcd0f0;font-size:12px;text-transform:uppercase;letter-spacing:.5px;background:var(--panel2)}
+  tr:hover td{background:rgba(255,255,255,.02)}
+  .kpi{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}
+  .kpi .b{flex:1;min-width:150px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+  .kpi .n{font-size:22px;font-weight:700;color:#fff}
+  .kpi .l{font-size:12px;color:var(--muted);margin-top:2px}
+  .flag{border-left:3px solid var(--amber);background:rgba(245,185,66,.07);padding:8px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13.5px}
+  .flag.r{border-color:var(--red);background:rgba(255,107,107,.07)}
+  .flag.g{border-color:var(--green);background:rgba(62,207,142,.07)}
+  .flag.b{border-color:var(--accent);background:rgba(79,156,249,.07)}
+  .q{font-style:italic;color:#d6e2f5;border-left:3px solid var(--accent2);padding:6px 14px;margin:10px 0;background:rgba(124,92,255,.06);border-radius:0 8px 8px 0}
+  .timeline{position:relative;margin:14px 0 0 6px;padding-left:22px;border-left:2px solid var(--line)}
+  .tl{position:relative;margin-bottom:18px}
+  .tl:before{content:"";position:absolute;left:-29px;top:4px;width:11px;height:11px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+  .tl .d{font-size:12px;color:var(--amber);font-weight:600;letter-spacing:.4px}
+  .tl .t{font-weight:600;color:#fff}
+  .person{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+  .badge{font-size:11px;padding:2px 8px;border-radius:6px;background:var(--accent2);color:#fff;font-weight:600}
+  .badge.you{background:var(--green);color:#06231a}
+  .src{font-size:12px;color:#6f7d96;word-break:break-all}
+  .pill{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:5px;background:var(--accent);color:#06203f;font-weight:700;vertical-align:middle;margin-left:6px}
+  .pill.conf{background:var(--green);color:#06231a}
+  .pill.inf{background:var(--amber);color:#3a2a00}
+  .two-col{column-count:2;column-gap:26px}
+  @media(max-width:900px){.two-col{column-count:1}}
+  details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin:10px 0}
+  summary{cursor:pointer;font-weight:600;color:#cfe0ff}
+  .ask{background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(79,156,249,.08));border:1px solid var(--accent2);
+    border-radius:12px;padding:16px 20px;margin:14px 0}
+  .ask h4{color:#c9b8ff;margin-top:0}
+  .foot{color:#5d6b85;font-size:12px;border-top:1px solid var(--line);padding-top:14px;margin-top:24px}
+  code{background:#0a0e18;padding:1px 6px;border-radius:5px;font-size:12.5px;color:#9fe0c0}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Meltwater — Deep Competitive Analysis</h1>
+  <div class="sub">Full teardown of strategy, AI product (Mira), GenAI Lens, leadership, and the Cision battleground — built as meeting prep for a conversation with <strong>Ant Cousins, VP of Product (AI)</strong>, who is hiring a Principal PM.</div>
+  <div class="meta">Compiled 24 Jun 2026 · 18-month lookback (Jan 2025–Jun 2026) · Researched via 10+ parallel agents · <span style="color:var(--green)">Confidence flags &amp; sources inline</span></div>
+</header>
+
+<div class="wrap">
+<nav>
+  <div class="navhead">Start here</div>
+  <a href="#tldr">TL;DR for the meeting</a>
+  <a href="#connections">Your people connections</a>
+  <a href="#ask">Smart questions to ask</a>
+  <div class="navhead">The Company</div>
+  <a href="#snapshot">Company snapshot</a>
+  <a href="#strategy">Corporate strategy</a>
+  <a href="#financials">Ownership &amp; financials</a>
+  <div class="navhead">The AI Story</div>
+  <a href="#aistrat">AI strategy</a>
+  <a href="#mira">Mira — deep dive</a>
+  <a href="#genai">GenAI Lens</a>
+  <a href="#tech">Tech &amp; data moat</a>
+  <a href="#timeline">Product timeline</a>
+  <div class="navhead">People</div>
+  <a href="#cousins">Ant Cousins ★</a>
+  <a href="#hackney">Chris Hackney</a>
+  <a href="#napolitano">Jason Napolitano</a>
+  <a href="#execs">Other execs</a>
+  <div class="navhead">Competitive</div>
+  <a href="#cision">Meltwater vs Cision</a>
+  <a href="#landscape">Wider landscape</a>
+  <a href="#mna">M&amp;A &amp; partnerships</a>
+  <a href="#sentiment">Customer sentiment</a>
+  <div class="navhead">Reference</div>
+  <a href="#reports">Reports &amp; thought leadership</a>
+  <a href="#sources">Sources</a>
+</nav>
+
+<main>
+
+<!-- ===================== TLDR ===================== -->
+<section id="tldr">
+  <h2>TL;DR — what you need walking in</h2>
+  <div class="card">
+    <p><strong>Meltwater is a ~$450–500M-revenue, PE-owned (Marlin + Altor, private since Aug 2023) media-intelligence incumbent that has bet its entire differentiation narrative on agentic AI.</strong> The story has two pillars:</p>
+    <ul>
+      <li><strong>Mira</strong> — an "AI teammate" launched May 2025, evolving fast into an embedded, agentic "digital teammate" across the whole platform (1.3M+ prompts handled by May 2026). <strong>This is Ant Cousins' baby.</strong></li>
+      <li><strong>GenAI Lens</strong> — a net-new category bet ("industry-first LLM brand monitoring") tracking how brands appear inside ChatGPT, Claude, Gemini, Perplexity, etc. This is their attempt to own the "GEO / AI-visibility" land grab.</li>
+    </ul>
+    <p>The strategy is <strong>data-moat-as-grounding, not frontier-model building</strong>: they consume foundation models (multi-vendor, Azure OpenAI named for Copilot; LLM-agnostic posture) and ground them via RAG on a proprietary ~1.3B-docs/day pipeline. Distribution play is aggressive: Microsoft Copilot, Slack, Mobile, and an open <strong>Mira API + MCP server</strong> that pushes Meltwater data <em>into</em> Claude/ChatGPT.</p>
+  </div>
+  <div class="kpi">
+    <div class="b"><div class="n">~$450–500M</div><div class="l">Est. revenue / ARR (flat-ish growth)</div></div>
+    <div class="b"><div class="n">~2,300</div><div class="l">Employees · 50 offices</div></div>
+    <div class="b"><div class="n">27,000+</div><div class="l">Customers, 120+ countries</div></div>
+    <div class="b"><div class="n">~1.3B</div><div class="l">Docs analyzed / day</div></div>
+    <div class="b"><div class="n">1.3M+</div><div class="l">Mira prompts handled (by May '26)</div></div>
+  </div>
+  <div class="flag b"><strong>The angle for your meeting:</strong> Ant owns the AI product org (~70 engineers + 17 product specialists). He's hiring a Principal PM. The most credible "in" is that you understand the category cold (you're at Cision), you know the players personally, and you can speak to where Mira's agentic vision and GenAI Lens land vs. where the real customer pain is (data accuracy, contract/trust reputation, and proving ROI).</div>
+</section>
+
+<!-- ===================== CONNECTIONS ===================== -->
+<section id="connections">
+  <h2>Your personal connections — how to play them</h2>
+  <div class="grid grid3">
+    <div class="card">
+      <div class="person"><strong>Ant Cousins</strong> <span class="badge you">YOU KNOW HIM</span></div>
+      <p>VP of Product (AI). <strong>Came from Cision</strong> (ED, AI Strategy, Nov 2022→Jan 2025) — you two overlapped in the same org/world. He founded <strong>Factmata</strong> (misinformation-detection AI), which Cision acquired Nov 2022. Shared language: PR measurement, AMEC, misinformation, agentic AI.</p>
+      <p class="src">Lever: you've watched him build AI at Cision and now Meltwater — talk shop peer-to-peer, not as a candidate cold-pitching. He goes by "Ant."</p>
+    </div>
+    <div class="card">
+      <div class="person"><strong>Chris Hackney</strong> <span class="badge you">YOU KNOW HIM</span></div>
+      <p>CPO — <strong>Ant's boss.</strong> Also ex-Cision-adjacent world (TrendKite, Oracle, founder of Virtue). If you know Chris, he's the decision-maker above the role. Worth a warm mention to Ant.</p>
+      <p class="src">Lever: a credible reference both up (Chris) and across the org.</p>
+    </div>
+    <div class="card">
+      <div class="person"><strong>Jason Napolitano</strong> <span class="badge you">YOU KNOW HIM</span></div>
+      <p>VP, Global Design. <strong>Also ex-Cision</strong> (Global Design Director), plus McKinsey Design &amp; Fjord. Big on speculative design / foresight. He owns the design language a Principal PM would partner with daily.</p>
+      <p class="src">Lever: spelling is <strong>Napolitano</strong> (not "Napolatano"). Design-PM partnership is a real talking point.</p>
+    </div>
+  </div>
+  <div class="flag g"><strong>The pattern:</strong> Cousins, Hackney, and Napolitano are all part of a <em>Cision diaspora now running Meltwater's product+AI+design core.</em> You sit inside Cision today. That makes you unusually legible to all three — you know the data, the customers, the org culture they came from, and the competitor they're now fighting. Lean into that.</div>
+</section>
+
+<!-- ===================== ASK ===================== -->
+<section id="ask">
+  <h2>Smart questions &amp; talking points for the meeting</h2>
+  <p>Calibrated to land as a peer who knows the category — and to subtly demonstrate Principal-PM-level thinking.</p>
+
+  <div class="ask">
+    <h4>On Mira &amp; the agentic roadmap</h4>
+    <ul>
+      <li>"You've moved Mira from assistant → 'digital teammate' fast. Where's the line between <strong>agent autonomy and the human-in-the-loop</strong> you keep stressing — what's the next agent you'd <em>not</em> ship yet?"</li>
+      <li>"Mira is grounded via RAG on your own corpus. As models get longer context and better tool-use, <strong>how defensible is the grounding layer vs. the data licenses themselves?</strong>"</li>
+      <li>"The Mira API + MCP server effectively lets customers pull Meltwater intelligence into ChatGPT/Claude and bypass your UI. <strong>Is that cannibalization risk or a deliberate platform bet?</strong>" <span class="pill">sharp</span></li>
+    </ul>
+  </div>
+  <div class="ask">
+    <h4>On GenAI Lens / the AI-visibility category</h4>
+    <ul>
+      <li>"GenAI Lens is a real category-creation move. <strong>Is the buyer the comms team or a new GEO/AI-SEO budget owner?</strong> Where does it sit in the funnel?"</li>
+      <li>"48-hour refresh and 'how to improve your LLM answer' recommendations — <strong>how do you measure that you actually moved an LLM's output?</strong> That attribution problem is the whole ballgame."</li>
+    </ul>
+  </div>
+  <div class="ask">
+    <h4>On the Principal PM role itself</h4>
+    <ul>
+      <li>"For this Principal PM — is the mandate <strong>0→1 net-new agentic surfaces, or scaling Mira into every workflow</strong> and fixing adoption depth?"</li>
+      <li>"What's the <strong>eval/quality bar</strong> for shipping an agent? Who owns the 'is this output trustworthy enough' decision today?" <span class="pill">shows you get the hard part</span></li>
+      <li>"How do you split AI product ownership across you, Chris (CPO), and Aditya (CTO)? Where does a Principal PM have real surface area?"</li>
+    </ul>
+  </div>
+  <div class="ask">
+    <h4>The things to gently probe (their soft spots)</h4>
+    <ul>
+      <li>Customer reviews repeatedly flag <strong>data accuracy / missed mentions</strong> and a <strong>commercial-trust problem (auto-renewal reputation)</strong>. A Principal PM who can tie AI features to <em>fixing</em> ROI-proof and trust, not just adding magic, is differentiated.</li>
+      <li>Mira's underlying foundation model is <strong>undisclosed</strong> — worth asking how they think about multi-model orchestration and cost (LLM unit economics show up in their job posts).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== SNAPSHOT ===================== -->
+<section id="snapshot">
+  <h2>Company snapshot</h2>
+  <div class="grid grid2">
+    <div class="card">
+      <h4>The basics</h4>
+      <table>
+        <tr><td><strong>Founded</strong></td><td>2001, Oslo, Norway (by Jørn Lyseggen, as "Magenta News")</td></tr>
+        <tr><td><strong>HQ</strong></td><td>San Francisco, CA · ~50 offices, 6 continents</td></tr>
+        <tr><td><strong>CEO</strong></td><td>John Box (with co. since 2006; CEO since Nov 2020) <span class="pill conf">confirmed current</span></td></tr>
+        <tr><td><strong>Status</strong></td><td>Private since 9 Aug 2023 (delisted from Oslo / Euronext, ticker MWTR)</td></tr>
+        <tr><td><strong>Owners</strong></td><td>Marlin Equity Partners + Altor (via MW Investment B.V.); Verdane &amp; founder co-invested</td></tr>
+        <tr><td><strong>Employees</strong></td><td>~2,300 (aggregators vary 1,600–2,600)</td></tr>
+        <tr><td><strong>Customers</strong></td><td>~27,000 globally</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4>What they sell</h4>
+      <p>A unified "media + social + consumer + sales intelligence" suite:</p>
+      <ul>
+        <li><strong>Media monitoring &amp; PR/comms</strong> — heritage &amp; strongest moat (news, broadcast, print, podcasts)</li>
+        <li><strong>Social listening</strong> — "Explore" / Explore+ (lineage: Sysomos + Linkfluence/Radarly)</li>
+        <li><strong>Consumer/market intelligence</strong> — brand health, trends (Linkfluence)</li>
+        <li><strong>Influencer marketing</strong> — Klear (30M+ creators); IDC MarketScape Leader 2025–26</li>
+        <li><strong>Sales intelligence</strong> — Owler (15M+ company profiles)</li>
+        <li><strong>AI layer</strong> — Mira, GenAI Lens, Copilot (the upsell/differentiation)</li>
+      </ul>
+      <span class="chip">B2B SaaS · 12-mo min contracts</span><span class="chip">~$15K entry → $100K+ enterprise</span><span class="chip">Opaque pricing</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STRATEGY ===================== -->
+<section id="strategy">
+  <h2>Corporate strategy &amp; narrative</h2>
+  <div class="card">
+    <p>Meltwater positions deliberately <strong>broader than pure PR monitoring or pure social listening</strong> — "the global leader in media, social, and consumer intelligence." Under PE ownership the posture shifted from the 2018–2021 acquisition-spree era to <strong>margin discipline + organic AI repositioning</strong> (no new acquisitions found 2024–2026 — the phase is consolidation, not buying).</p>
+    <h4>The dominant 2025–2026 narrative = AI, framed two ways</h4>
+    <div class="grid grid2">
+      <div>
+        <h3>1. "Tools → Teammates"</h3>
+        <p>Chris Hackney's framing since May 2025. AI as an agentic "teammate" (Mira) that does the work, not a dashboard you operate. Evolving in 2026 to <strong>"narrative intelligence"</strong> and <strong>"the era of intelligent teammates."</strong></p>
+      </div>
+      <div>
+        <h3>2. "Brands in the age of AI answers"</h3>
+        <p>The GenAI Lens wedge: as consumers get info from AI chatbots, brands must monitor/influence their representation in LLM outputs. Meltwater is trying to <strong>define and own "LLM brand monitoring."</strong> Pegged to a Gartner stat (~30% of brand perception shaped by GenAI by 2026).</p>
+      </div>
+    </div>
+  </div>
+  <div class="flag">Marlin CI footnote: Marlin <strong>also owned Talkwalker</strong> (sold to Hootsuite Apr 2024) — so the same PE firm has sat on multiple sides of this market. No Meltwater–Talkwalker consolidation occurred.</div>
+</section>
+
+<!-- ===================== FINANCIALS ===================== -->
+<section id="financials">
+  <h2>Ownership &amp; financials</h2>
+  <div class="grid grid2">
+    <div class="card">
+      <h4>The take-private</h4>
+      <ul>
+        <li>Announced <strong>18 Jan 2023</strong>; completed <strong>9 Aug 2023</strong></li>
+        <li><strong>NOK 18.00/share</strong>, ~36% premium; equity value <strong>~NOK 5,800M (~$550–580M)</strong></li>
+        <li>Acquirer: MW Investment B.V. (Marlin + Altor jointly)</li>
+        <li>Dec 2023: Verdane put ~$65M into founder's Fountain Venture vehicle</li>
+      </ul>
+      <div class="flag r"><strong>Myth-bust:</strong> the "~$1.3B deal" figure could <em>not</em> be confirmed — primary docs cite only per-share / ~NOK 5.8B equity. And it was <strong>Marlin <em>and</em> Altor</strong>, not Marlin alone.</div>
+    </div>
+    <div class="card">
+      <h4>Financial trajectory <span class="pill inf">opaque post-2023</span></h4>
+      <table>
+        <tr><th>Metric</th><th>Figure</th></tr>
+        <tr><td>FY2022 revenue</td><td>~$438.7M</td></tr>
+        <tr><td>Q1 2023 ARR</td><td>$459.2M (+7% YoY)</td></tr>
+        <tr><td>ARR (Dec 2023, cited)</td><td>~€500M</td></tr>
+        <tr><td>Gross margin (last public)</td><td>~76.8%</td></tr>
+        <tr><td>Adj. EBITDA margin</td><td>Low single digits — <em>modestly profitable, low margin</em></td></tr>
+      </table>
+      <p class="src">No audited post-2023 figures (private). Treat any specific recent revenue number as low-confidence.</p>
+    </div>
+  </div>
+  <div class="flag">Layoffs: <strong>no officially announced mass RIF</strong> 2024–2026 — only anecdotal Glassdoor reports of quiet, rolling redundancies ("~20 with one day's notice"). Consistent with PE cost discipline; not a documented event.</div>
+</section>
+
+<!-- ===================== AI STRATEGY ===================== -->
+<section id="aistrat">
+  <h2>AI strategy — the full picture</h2>
+  <div class="card">
+    <p>The strategic thesis, in Aditya Jami's (CTO) words:</p>
+    <div class="q">"The challenge isn't access to data, it's making sense of it fast enough to act… AI only delivers value when it's embedded into day-to-day workflows and decision-making."</div>
+    <h4>The five layers of the AI strategy</h4>
+    <ol>
+      <li><strong>Proprietary NLP enrichment</strong> (in-house models — sentiment, NER, key-phrase) at billion-doc scale for cost/latency reasons.</li>
+      <li><strong>Generative / agentic layer (Mira)</strong> — RAG over the corpus + specialized multi-step agents, using <em>third-party foundation models</em> (multi-vendor).</li>
+      <li><strong>AI-visibility (GenAI Lens)</strong> — monitoring brands inside LLM outputs; a net-new category.</li>
+      <li><strong>Distribution everywhere</strong> — Microsoft Copilot (Azure OpenAI), Slack, Mobile, and an open <strong>Mira API + MCP server</strong>.</li>
+      <li><strong>Governance</strong> — ISO 42001 AI certification cited; "communications-trained models"; human-in-the-loop emphasis.</li>
+    </ol>
+  </div>
+  <div class="grid grid2">
+    <div class="card">
+      <h4>Model & partnership posture <span class="pill conf">important</span></h4>
+      <ul>
+        <li><strong>Mira's base LLM is undisclosed</strong> — strong signal of deliberate <strong>multi-model / vendor-agnostic orchestration</strong> (job posts stress "consistency across model providers" + "LLM unit economics").</li>
+        <li><strong>Microsoft / Azure OpenAI</strong> = the one named, deep partnership (Copilot). Feb 2024 Azure alliance; Microsoft is also a <em>customer</em>.</li>
+        <li><strong>No formal Anthropic or Google deal.</strong> Claude/ChatGPT links are <em>interoperability</em> (via MCP) and <em>monitoring</em> (via GenAI Lens), not partnerships. Don't overstate.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Data moat feeding the AI</h4>
+      <ul>
+        <li>Real-time licensed news + social, decade+ relationships</li>
+        <li><strong>X resyndication rights</strong> (Oct 2024 — claims first in Western Hemisphere)</li>
+        <li><strong>Reddit Official Data Partner</strong> (Feb 2026)</li>
+        <li>TikTok, Snapchat, Bluesky, Threads, YouTube creator data, Substack</li>
+        <li>Dow Jones / WSJ premium content licensing</li>
+        <li>DeepReason.ai (2021) knowledge-graph reasoning engine underpins it</li>
+      </ul>
+    </div>
+  </div>
+  <div class="flag g"><strong>The honest read:</strong> Meltwater's durable edge is the <em>data + the billion-doc/day enrichment pipeline as grounding</em> — not model innovation. They're a sophisticated <em>consumer</em> of frontier models, racing to embed them into PR/comms workflows faster than Cision.</div>
+</section>
+
+<!-- ===================== MIRA ===================== -->
+<section id="mira">
+  <h2>Mira — the deep dive ★</h2>
+  <p>This is the centerpiece, and it's <strong>Ant Cousins' product.</strong> Know it cold.</p>
+  <div class="card">
+    <p><strong>What it is:</strong> Meltwater's brand for its AI layer — positioned as an <strong>"AI teammate" / "digital teammate,"</strong> not a chatbot. Architecturally: a chat-based conversational assistant fused with <strong>agentic ("specialized AI agents") workflows</strong>, grounded via <strong>RAG on Meltwater's ~1.3B-docs/day dataset</strong>, with <strong>source-linked citations</strong> on every output.</p>
+    <div class="q">"The first agentic AI teammate purpose-built for social and media intelligence… uniquely trained on the work you do and Meltwater's leading social + news dataset." — CTO Aditya Jami</div>
+  </div>
+
+  <h3>The Mira surfaces (know these by name)</h3>
+  <table>
+    <tr><th>Surface</th><th>What it is</th></tr>
+    <tr><td><strong>Mira Studio</strong></td><td>Flagship full conversational workspace — "the first agentic AI teammate for social &amp; media intelligence." Includes the prompt library.</td></tr>
+    <tr><td><strong>Mira Companion</strong></td><td>In-app contextual assistant (formerly "Platform Assistant"); tips, FAQs, shortcuts; can now spin up a Unified Dashboard from a prompt.</td></tr>
+    <tr><td><strong>Mira Canvas</strong></td><td>Full-page surface to edit/annotate/finalize AI outputs in-platform (no copy-paste out).</td></tr>
+    <tr><td><strong>Mira Projects</strong></td><td>Persistent per-campaign/brand/client workspaces (goals, competitors, saved searches, influencer lists); grounds API responses.</td></tr>
+    <tr><td><strong>Mira API / MCP server</strong></td><td>Developer access — OpenAI-style chat-completion endpoint w/ citations; MCP lets Claude/ChatGPT call Mira.</td></tr>
+    <tr><td><strong>Mira for Slack / Mobile</strong></td><td>May 2026 — full Mira inside Slack (beta) and on mobile.</td></tr>
+  </table>
+
+  <h3>Capabilities</h3>
+  <div class="two-col">
+    <ul>
+      <li>Natural-language querying (kills Boolean)</li>
+      <li>Summaries, news/media/executive briefings</li>
+      <li>Competitive &amp; campaign analysis</li>
+      <li>Crisis / emerging-narrative detection</li>
+      <li><strong>Multi-step agents</strong> → full coverage report (exec summary, sentiment, platform breakdowns, recommendations) in ~1 min</li>
+      <li>Auto-generate <strong>branded PowerPoint</strong> + live interactive dashboard</li>
+      <li>Media/journalist list building</li>
+      <li>Scheduled Outputs (recurring insights to inbox)</li>
+      <li>Source-linked citations on every output</li>
+      <li>Prompt library by use case</li>
+      <li>Brand-voice memory (via Projects)</li>
+    </ul>
+  </div>
+
+  <div class="grid grid2">
+    <div class="card">
+      <h4>Adoption &amp; packaging</h4>
+      <ul>
+        <li><strong>1.3M+ prompts handled</strong> to date (by May 2026)</li>
+        <li>Recognized by <strong>OpenAI for processing 10B+ tokens</strong></li>
+        <li>GA &amp; shipping; 2026 features (agents, Slack, Mobile, API/MCP) rolled out May 2026</li>
+        <li>No public pricing; basic Mira in lower tiers, advanced in Pro+ (3rd-party signal)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Reviews &amp; limitations <span class="pill inf">watch items</span></h4>
+      <ul>
+        <li>Positive: "made it much easier to search for contacts and journalists"</li>
+        <li>"...while having some bugs" — Mira Companion/Studio sometimes hangs/fails (e.g., geo-filtered journalist searches)</li>
+        <li>Underlying weakness = <strong>real-time data completeness</strong> (misses niche/non-English mentions)</li>
+        <li>No public hallucination findings — citation grounding mitigates, but data freshness is the recurring gripe</li>
+      </ul>
+    </div>
+  </div>
+  <details>
+    <summary>Mira technical architecture (for a sharp PM conversation)</summary>
+    <ul>
+      <li><strong>RAG stack over billions of docs/day</strong> + specialized multi-step agents (confirmed at a Paris NLP meetup by Meltwater's French AI team)</li>
+      <li>Grounding: "Mira Projects" inject top-level instructions + Meltwater assets (per-tenant retrieval context)</li>
+      <li>Substrate: petabyte-scale <strong>Elasticsearch</strong> (documented 3PB / 400+ node clusters), Kubernetes, Kafka, MongoDB; multi-cloud <strong>AWS + Azure</strong></li>
+      <li>Hard problem (per Jami): making LLMs do <strong>deterministic workflows</strong> — needs strict context engineering + eval systems</li>
+      <li>Base LLM(s): <strong>undisclosed</strong>; multi-provider inferred</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ===================== GENAI LENS ===================== -->
+<section id="genai">
+  <h2>GenAI Lens — the category bet</h2>
+  <div class="card">
+    <p>Launched <strong>29 Jul 2025</strong> as "industry-first LLM brand monitoring." Tracks how a brand, products, and competitors are discussed across <strong>ChatGPT, Claude, Gemini, Perplexity, Grok, DeepSeek</strong> (claims 90%+ of LLMs) — capturing responses, sentiment, narratives, misinformation risk, and <strong>the sources the models cite</strong>. ~48-hour refresh.</p>
+    <h4>2026 upgrades</h4>
+    <ul>
+      <li><strong>AI-Powered Recommendations</strong> — how to improve your brand's visibility/positioning in LLM answers</li>
+      <li><strong>LLM-Generated Reporting</strong> — branded, exec-ready summaries in minutes</li>
+      <li>Geographic breakdowns &amp; labeling; Google Analytics integration (ties AI visibility to web traffic)</li>
+    </ul>
+    <div class="flag b"><strong>Why it matters strategically:</strong> this is Meltwater trying to <em>create and own a category</em> (GEO / "answer-engine optimization") before Cision and the SEO incumbents do. It's their most distinctive 2025–26 bet — and a natural area for a Principal PM. The hard unsolved problem is <strong>attribution</strong>: proving a recommendation actually changed an LLM's output.</div>
+  </div>
+</section>
+
+<!-- ===================== TECH ===================== -->
+<section id="tech">
+  <h2>Tech &amp; data moat</h2>
+  <div class="grid grid2">
+    <div class="card">
+      <h4>Data scale</h4>
+      <table>
+        <tr><td>Docs/day</td><td>~1.0–1.3B (news + social)</td></tr>
+        <tr><td>Retrieval corpus</td><td>~40B docs (Fairhair.ai)</td></tr>
+        <tr><td>News sources</td><td>270K–400K+</td></tr>
+        <tr><td>Podcasts</td><td>~20–25K real-time</td></tr>
+        <tr><td>Editorial archive</td><td>back to 2009</td></tr>
+        <tr><td>NLP calls/day</td><td>10B+</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4>The vulnerability to know about <span class="pill inf">talking point</span></h4>
+      <p>The "190–240 languages" marketing claim is <strong>monitoring reach, not analytical depth.</strong> Actual NLP enrichment is far narrower:</p>
+      <ul>
+        <li>Sentiment: ~16 languages</li>
+        <li>Key-phrase / categorization: ~12</li>
+        <li>NER: <strong>4</strong> (EN, DE, SV, NO)</li>
+        <li>Entity disambiguation / intent: <strong>English only</strong></li>
+      </ul>
+      <p class="src">This marketing-vs-reality gap is a legit competitive talking point — and a real product problem a PM could own.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h4>Other moat &amp; gaps</h4>
+    <span class="chip g">Moat: billion-doc NLP pipeline</span>
+    <span class="chip g">Moat: licensed archive to 2009</span>
+    <span class="chip g">Moat: petabyte ES substrate</span>
+    <span class="chip g">Moat: data → MCP into customer agents</span>
+    <span class="chip a">Gap: no public accuracy benchmarks</span>
+    <span class="chip a">Gap: computer-vision stack not recently refreshed</span>
+    <span class="chip a">Gap: shallow multilingual analytical depth</span>
+    <p style="margin-top:10px">Hiring signals point to: multi-agent workflows, RAG + vector DBs, LangChain/LlamaIndex/Guardrails, eval/monitoring for factuality + brand safety, red-teaming, and explicit <strong>inference-cost discipline</strong>. They're building an AI hub in Hyderabad.</p>
+  </div>
+</section>
+
+<!-- ===================== TIMELINE ===================== -->
+<section id="timeline">
+  <h2>Product timeline (Jan 2025 – Jun 2026)</h2>
+  <p>Twice-yearly major releases (Mid-Year ~May, Year-End ~Oct) + standalone launches. <strong>Nearly everything is AI.</strong></p>
+  <div class="timeline">
+    <div class="tl"><div class="d">FEB 3 2025</div><div class="t">Snapchat social listening integration</div>First platform with Snapchat-specific insights (Public Profile API); AI image-recognition brand tagging.</div>
+    <div class="tl"><div class="d">MAR 3 2025</div><div class="t">TikTok insights + Marketing Partner badge</div>Via TikTok's Mentions &amp; Discovery API (in beta).</div>
+    <div class="tl"><div class="d">MAY 6 2025</div><div class="t">★ 2025 Mid-Year Release — MIRA launches</div>Mira ("AI teammate"), <strong>Explore+</strong> (enterprise listening), Copilot to GA, Bluesky/Threads, TikTok publishing in Engage.</div>
+    <div class="tl"><div class="d">JUL 29 2025</div><div class="t">★ GenAI Lens — industry-first LLM brand monitoring</div>Standalone launch.</div>
+    <div class="tl"><div class="d">OCT 23 2025</div><div class="t">2025 Year-End Release</div>Mira Projects + Canvas, Meltwater Agent for Microsoft, Predictive Analytics, Klear AI Discovery (NL influencer search), Unified Dashboards (paid+earned+owned).</div>
+    <div class="tl"><div class="d">JAN 5 2026</div><div class="t">Microsoft Marketplace launch partner</div>AI agents for Teams + M365 Copilot.</div>
+    <div class="tl"><div class="d">FEB 12 2026</div><div class="t">Reddit Official Data Partner</div>Formalizes a decade-old relationship; enterprise API access to 100K+ communities.</div>
+    <div class="tl"><div class="d">APR 23 2026</div><div class="t">Expanded YouTube integration</div>Creator Partnerships API — verified creator/audience/performance data.</div>
+    <div class="tl"><div class="d">MAY 5 2026</div><div class="t">★ 2026 Mid-Year Release — Mira "digital teammate"</div>Multi-step agents, Scheduled Outputs, branded PPT/dashboards, <strong>Mira for Slack + Mobile</strong>, <strong>Mira API + MCP</strong>, GenAI Lens recommendations + LLM reporting, Speech-to-Text, YouTube channel-level + Substack data, Reputation/Narrative Intelligence dashboards.</div>
+  </div>
+  <div class="flag">Acquisition integration status: <strong>Linkfluence/Radarly</strong> → fully rebranded into Consumer Intelligence (brand retired Apr 2023). <strong>Klear</strong> → still branded, most actively developed. <strong>Owler</strong> → inside Sales Intelligence Suite. No new acquisitions in window.</div>
+</section>
+
+<!-- ===================== COUSINS ===================== -->
+<section id="cousins">
+  <h2>★ Ant Cousins — the person you're meeting</h2>
+  <div class="card">
+    <div class="person"><strong style="font-size:18px">Antony "Ant" Cousins</strong> <span class="badge">VP of Product, AI</span> <span class="badge you">EX-CISION · YOU KNOW HIM</span></div>
+    <p>The most active AI thought-leadership voice at Meltwater, and <strong>the hiring manager for this Principal PM role.</strong> Reports to CPO Chris Hackney. Leads ~<strong>70 engineers + 17 product specialists</strong> across AI data, governance, analytics — and owns <strong>Mira</strong>.</p>
+    <h4>Career path (corrected — full chain)</h4>
+    <ul>
+      <li><strong>UK Government / military comms (~15 yrs):</strong> MoD / British Army press officer; built an early media-monitoring/sentiment tool; deployed Afghanistan, Germany, Middle East (Arab Spring).</li>
+      <li><strong>ProFinda → Content Score (CEO):</strong> AI/knowledge &amp; brand-safety startups.</li>
+      <li><strong>Factmata — CEO</strong> (from ~2021): AI misinformation / narrative detection.</li>
+      <li><strong>Cision — Executive Director, AI Strategy</strong> (Nov 2022 → Jan 2025), joined via Cision's acquisition of Factmata. Built Cision's Risk Score + GenAI roadmap. <span class="pill conf">your overlap</span></li>
+      <li><strong>Meltwater — VP of Product</strong> (July 2025→), to grow Mira &amp; combat misinformation.</li>
+      <li>Credentials: <strong>CIPR Diploma (MCIPR)</strong>, no university degree surfaced; <strong>AMEC Tech Hub chair.</strong></li>
+    </ul>
+    <div class="flag r"><strong>Important correction:</strong> there is <strong>no public record tying Ant to ScribbleLive.</strong> His path is Factmata → Cision → Meltwater. (Cision <em>did</em> own ScribbleLive — acquired 2018 — so if you remember him from a ScribbleLive context, the connection is likely <em>via Cision</em>. Don't assert ScribbleLive as fact; confirm verbally.)</div>
+    <div class="flag g"><strong>Your strongest card:</strong> you were both inside Cision's AI/measurement orbit. Talk to him as someone who watched him build, knows Factmata's lineage, and understands the exact competitor he's now fighting. Peer conversation, not candidate pitch.</div>
+  </div>
+
+  <div class="grid grid2">
+    <div class="card">
+      <h4>His AI philosophy (use his language)</h4>
+      <div class="q">"AI is more of a <strong>user experience revolution than a measurement revolution</strong>." — his signature line: the biggest barrier to AI value is knowing how to use the tools.</div>
+      <div class="q">"The thing that gets me up in the morning is not the idea of putting people out of work… but the idea that the work you're going to be doing in the future is much more <strong>human-orientated</strong>."</div>
+      <ul>
+        <li>"AI agents and skills-based architectures are shifting teams away from manual workflows toward <strong>goal-oriented systems</strong>" (Summit 2026).</li>
+        <li>AI automates busy-work but <strong>"empathy, judgment, creativity, and strategic thinking remain irreplaceable."</strong></li>
+        <li>Post-SEO: <em>"Optimization is out; influence is in"</em> — winning with LLMs means affecting the answers themselves (GenAI Lens thesis).</li>
+        <li>Responsible/ethical-AI conviction (legacy of the Factmata misinformation mission); brand trust "in the age of AI skepticism."</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Recent signals (2025–26)</h4>
+      <ul>
+        <li><strong>PRWeek "AI 25: Class of 2026"</strong> (Mar 2026) — his <strong>third time</strong> (2023, 2024, 2026).</li>
+        <li>Credited with Mira's launch — "the award-winning agentic UX… recognised by OpenAI for processing over 10 billion tokens."</li>
+        <li>Summit 2026 session: <em>"The Smart Shift: Using AI to Supercharge Comms Strategy."</em></li>
+        <li>Speaker: AMEC Summit 2026; Webby Awards interview on brand trust + AI.</li>
+        <li>LinkedIn: linkedin.com/in/antony-cousins-6004b264</li>
+      </ul>
+      <div class="q">"By bringing together world-class engineers, data scientists and product leaders, we're reshaping how communications teams discover insights, measure impact and make decisions."</div>
+    </div>
+  </div>
+  <div class="flag b"><strong>What he likely wants in a Principal PM</strong> (inferred from his thesis): someone who drives <strong>agentic UX &amp; adoption</strong> for non-technical comms/marketing users (his "UX revolution not measurement revolution" line), is comfortable with <strong>AI governance, data quality &amp; measurement</strong> (AMEC roots), can translate between ~70 engineers/data scientists and PR buyers, and shares the <strong>"make work more human"</strong> ethos. He'll value product taste + customer empathy + responsible-AI instincts over pure ML depth. Your Cision domain depth maps directly.</div>
+  <div class="card" style="margin-top:6px">
+    <h4>Why he chose Meltwater (verbatim — tells you what he values)</h4>
+    <div class="q">"Meltwater was the only company I put in the top-right-hand box… the only company where I felt I wouldn't be the only 'AI guy' but rather part of an <strong>AI team</strong> that would help me grow."</div>
+    <p class="src">Read: he values being part of a real AI org, not a lone-wolf hire. Mira "is claimed to return ~25% of a team's time each week," and was "recognised by OpenAI for processing 10B+ tokens" (company claim, unverified).</p>
+  </div>
+</section>
+
+<!-- ===================== HACKNEY ===================== -->
+<section id="hackney">
+  <h2>Chris Hackney — CPO (Ant's boss)</h2>
+  <div class="card">
+    <div class="person"><strong>Chris Hackney</strong> <span class="badge">Chief Product Officer</span> <span class="badge you">YOU KNOW HIM</span></div>
+    <ul>
+      <li>Joined Meltwater <strong>April 2024</strong>; owns the full product portfolio strategy. Ant reports to him.</li>
+      <li>Background: 25+ yrs B2B SaaS. Founded <strong>Virtue</strong> (early social SaaS, acquired by Oracle) → led Oracle Customer Success → exec roles at <strong>TrendKite</strong> (PR/comms), Mercury Healthcare, AI Guardian. MBA, Duke Fuqua.</li>
+      <li>Coined Meltwater's <strong>"tools into teammates"</strong> framing (May 2025) and 2026's <strong>"narrative intelligence."</strong></li>
+    </ul>
+    <div class="q">"At Meltwater, we're turning AI technology from tools into teammates… to excel at making smarter decisions, faster." — Mira launch, May 2025</div>
+    <p class="src">Note: AI is run jointly by Hackney (Product) + Aditya Jami (CTO/Eng). There is <strong>no standalone Chief AI Officer</strong> — Ant's VP-Product-AI role is the AI product lead under Hackney.</p>
+  </div>
+</section>
+
+<!-- ===================== NAPOLITANO ===================== -->
+<section id="napolitano">
+  <h2>Jason Napolitano — VP Global Design</h2>
+  <div class="card">
+    <div class="person"><strong>Jason C. Napolitano</strong> <span class="badge">VP, Global Design</span> <span class="badge you">EX-CISION · YOU KNOW HIM</span></div>
+    <p class="src">Spelling confirmed: <strong>Napolitano</strong> (not "Napolatano"). Based in Austin, TX. Title best-supported as Global VP Design <span class="pill inf">aggregator-sourced</span>.</p>
+    <ul>
+      <li>Career: Meltwater (~2023–24→) ← Absorb Software (Head of Experience Design) ← <strong>Cision (Global Design Director)</strong> ← McKinsey Design ("Futures Tribe") ← Fjord/Accenture (Service Design Lead). Earlier: Samsung, AOL, Lab49.</li>
+      <li>Distinctive signature: <strong>speculative design / design fiction + strategic foresight</strong> (the "Futures Cone"; writing a sci-fi book, "The Program"). Calls himself a "Design Thinker and Sci-Fi writer."</li>
+      <li>Owns the design language Mira and the whole platform ship in — a Principal PM's daily partner.</li>
+    </ul>
+    <div class="flag">Another <strong>Cision alum</strong> in the core product/design leadership. If you know Jason, a warm mention reinforces how legible you are to this whole team.</div>
+  </div>
+</section>
+
+<!-- ===================== EXECS ===================== -->
+<section id="execs">
+  <h2>Other key execs</h2>
+  <table>
+    <tr><th>Person</th><th>Role</th><th>Notes</th></tr>
+    <tr><td><strong>John Box</strong></td><td>CEO</td><td>Since 2006; CEO since Nov 2020. Confirmed current (Summit 2026). Oxford Saïd leadership diploma.</td></tr>
+    <tr><td><strong>Aditya Jami</strong></td><td>CTO</td><td>Ex-Netflix (built the original Chaos Monkey), Yahoo. Stanford MS CS. The AI-architecture voice. Co-owns AI roadmap w/ Hackney.</td></tr>
+    <tr><td><strong>Chris Hackney</strong></td><td>CPO</td><td>Ant's boss (see above).</td></tr>
+    <tr><td><strong>Alexandra (Saab) Bjertnæs</strong></td><td>Chief Strategy Officer</td><td>Most prolific bylined exec (Adweek/Ad Age). Marketing sits under her — <em>no standalone CMO.</em> "Predictive → proactive AI."</td></tr>
+    <tr><td><strong>Tres Thompson</strong></td><td>CFO</td><td>New — joined Nov 2025 (replaced Martin Hernandez). 35+ yrs finance.</td></tr>
+    <tr><td><strong>Scott Gibbs</strong></td><td>CRO</td><td>Joined 2022; ex-Tableau/Salesforce.</td></tr>
+    <tr><td><strong>Doug Balut</strong></td><td>SVP Global Alliances</td><td>Built the Global Partner Program (70+ partners); CRN 2026 Channel Chief.</td></tr>
+  </table>
+  <p class="src">Gaps flagged: no standalone CMO (under CSO), no confirmed current COO, no Chief AI Officer.</p>
+</section>
+
+<!-- ===================== CISION ===================== -->
+<section id="cision">
+  <h2>Meltwater vs Cision — the battleground</h2>
+  <p>Critical for you: <strong>you're at Cision, Ant/Chris/Jason came from Cision.</strong> Know both sides of this fight.</p>
+  <div class="grid grid2">
+    <div class="card">
+      <h4>How Meltwater attacks Cision</h4>
+      <p>Main vehicle: their "7 Best Cision Alternatives for 2026" blog. Frame: switch when tools <em>"lack data freshness, targeting precision, or workflow support."</em> Vectors:</p>
+      <ul>
+        <li>Cision = stale database, imprecise targeting, weak workflow</li>
+        <li>Cision = harder to use (Boolean, learning curve)</li>
+        <li>Cision = PR-siloed, poor marketing/social alignment</li>
+        <li>Cision = weaker AI (vs Mira + GenAI Lens)</li>
+      </ul>
+      <p class="src">Notably <strong>avoids</strong> attacking Cision on price/contracts — because Meltwater's own auto-renewal reputation is its glass house.</p>
+    </div>
+    <div class="card">
+      <h4>How Cision counters</h4>
+      <p>No head-to-head attack page; counters structurally via CisionOne positioning:</p>
+      <ul>
+        <li>"The only platform <strong>custom-built for communicators, not marketers</strong>" (direct jab at Meltwater's marketing/social-listening lineage)</li>
+        <li>"Unmatched in accuracy" + human-verified database (~1.4M vs Meltwater's ~380K contacts)</li>
+        <li>Exclusive <strong>premium paywalled content</strong> (WSJ, Barron's, NYT, MarketWatch)</li>
+        <li><strong>PR Newswire distribution</strong> — the rail Meltwater lacks natively</li>
+        <li>"No data scientist or Boolean needed" rebuttal</li>
+        <li>2025–26 AI offensive: AI Suite, React Score, <strong>Trajaan acquisition</strong>, AI Coverage Analysis (explicitly mocking competitors' "generic abstracts")</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h4>The contestable facts (so you're not caught flat)</h4>
+    <table>
+      <tr><th></th><th>Meltwater</th><th>Cision</th></tr>
+      <tr><td>G2 rating</td><td>~3.7–4.1</td><td>CisionOne ~4.0 / Distribution ~3.8</td></tr>
+      <tr><td>PR market share (6sense)</td><td>~8.6% (#3)</td><td>~34% (#2/leader)</td></tr>
+      <tr><td>Typical price</td><td>~$15–20K+ (<strong>often MORE expensive</strong>)</td><td>~$10–15K</td></tr>
+      <tr><td>Media database</td><td>~380K verified</td><td>~1.4M (legacy) / 500K validated</td></tr>
+      <tr><td>Biggest rep liability</td><td><strong>Auto-renewal / lock-in</strong></td><td>Bugginess, price hikes, DB duplication post-merger</td></tr>
+    </table>
+    <div class="flag r"><strong>Reality check vs Meltwater's pitch:</strong> Meltwater is generally the <em>more expensive</em> of the two and carries the heavier auto-renewal reputation — so its "affordable + easy" framing is contestable. Conversely, Cision's freshest vulnerabilities Meltwater exploits are the post-2023 Cision+PR Newswire <strong>database duplication</strong> problem and CisionOne bugginess complaints.</div>
+  </div>
+  <div class="flag b"><strong>AI is the 2026 front line:</strong> Mira vs CisionOne AI Assistant; GenAI Lens vs Cision's AI Coverage Analysis. Both are racing into conversational AI + LLM/AI-search visibility. This is exactly the terrain Ant is hiring for.</div>
+</section>
+
+<!-- ===================== LANDSCAPE ===================== -->
+<section id="landscape">
+  <h2>Wider competitive landscape</h2>
+  <div class="grid grid2">
+    <div class="card">
+      <h4>Brandwatch (Cision-owned)</h4>
+      <p>Most direct full-stack rival. Iris AI layer; Nov 2025 AI expansion. Sibling to CisionOne (not merged). Backed by PR Newswire muscle. Cision acquired <strong>Trajaan</strong> (Dec 2025) for AI/search intelligence; sold off HARO.</p>
+    </div>
+    <div class="card">
+      <h4>Sprinklr (NYSE: CXM)</h4>
+      <p>Only public/standalone player. FY2026 rev $857M (+8%). But: <strong>~15% layoffs early 2025</strong>, "Project Bear Hug," exec churn (Rory Read CEO). AI+: Digital Twins, AI Agents, agentic CX. Broader (CCaaS) than Meltwater. <span class="chip a">turbulent = opening</span></p>
+    </div>
+    <div class="card">
+      <h4>Talkwalker → Hootsuite</h4>
+      <p>Hootsuite acquired Talkwalker from Marlin (Apr 2024). Blue Silk AI / Yeti. Now "Hootsuite Listening" — repositioning <strong>down-market</strong>, potentially ceding enterprise to Meltwater/Brandwatch.</p>
+    </div>
+    <div class="card">
+      <h4>Hootsuite</h4>
+      <p>SMB/mid-market social management + Talkwalker listening. <strong>CEO churn:</strong> Novoselsky out Apr 2026, founder Ryan Holmes back as interim; DHS-contract controversy. OwlyGPT (Talkwalker-powered). <span class="chip a">unsettled = opening</span></p>
+    </div>
+  </div>
+  <div class="flag g"><strong>Cross-cutting:</strong> the whole category is PE-consolidated and in an AI arms race — and two rivals (Sprinklr, Hootsuite) are visibly turbulent right now. That's the competitive backdrop Meltwater is pressing into with Mira/GenAI Lens.</div>
+
+  <h3>The frontier that matters most: GEO / AI-visibility</h3>
+  <div class="card">
+    <p>A brand-new category exploded in exactly the window GenAI Lens plays in — "Generative Engine Optimization" / measuring brand presence inside LLM answers. This is <strong>the most important competitive context for your conversation with Ant</strong>, because GenAI Lens is Meltwater's bet here and it's now contested on three fronts:</p>
+    <ul>
+      <li><strong>Well-funded pure-plays:</strong> <strong>Profound</strong> — $96M Series C at a <strong>~$1B valuation (Feb 2026)</strong>, 700+ customers incl. 10% of the Fortune 500. Plus Peec AI ($21M), Bluefish ($20M, NEA), Evertune, Scrunch, Otterly (Gartner Cool Vendor).</li>
+      <li><strong>AI-native incumbents:</strong> <strong>Signal AI</strong> raised $165M (Battery, majority stake) and <strong>acquired Memo (Mar 2026)</strong> — bringing real publisher readership data to undercut Meltwater's impressions metrics; launched "AI Citations." <strong>Quid</strong> went MCP-native/agentic. <strong>Muck Rack</strong> shipped "Generative Pulse" (LLM-answer tracking).</li>
+      <li><strong>Direct rivals matching move-for-move:</strong> Cision <strong>acquired Trajaan</strong> (Dec 2025) as its AI-search answer; Brandwatch's <strong>Iris AI</strong> (Nov 2025) touts deeper data (1.7T conversations since 2010, 44-language sentiment). Semrush rebuilt Prowly into an "AI PR Toolkit."</li>
+    </ul>
+    <div class="flag b"><strong>The strategic question for the PM role:</strong> can Meltwater's GenAI-Lens-as-a-feature-of-the-suite beat a $1B-funded pure-play (Profound) and an AI-native incumbent that now owns real readership data (Signal AI + Memo)? The unsolved problem everyone shares is <strong>attribution</strong> — proving you actually moved an LLM's output. Whoever cracks that owns the category.</div>
+  </div>
+</section>
+
+<!-- ===================== M&A ===================== -->
+<section id="mna">
+  <h2>M&amp;A &amp; partnerships</h2>
+  <div class="grid grid2">
+    <div class="card">
+      <h4>Acquisitions (all pre-window — now integrating)</h4>
+      <ul>
+        <li><strong>Linkfluence/Radarly</strong> — 2021, ~€50M → Consumer Intelligence</li>
+        <li><strong>Klear</strong> — 2021 → Influencer Marketing (still branded)</li>
+        <li><strong>Owler</strong> — 2021, ~$24.5M → Sales Intelligence</li>
+        <li><strong>DeepReason.ai</strong> — 2021, ~$7.3M (Oxford spin-off) → knowledge-graph reasoning engine behind the AI</li>
+        <li>Earlier: DataSift, Sysomos (2018)</li>
+      </ul>
+      <p class="src"><strong>No new acquisitions 2024–2026.</strong> Phase = integrate + build, not buy.</p>
+    </div>
+    <div class="card">
+      <h4>Partnerships</h4>
+      <ul>
+        <li><strong>Microsoft / Azure OpenAI</strong> — flagship (Copilot, Marketplace); Microsoft also a customer</li>
+        <li><strong>AWS</strong> — Marketplace + Data Exchange (outbound data sales)</li>
+        <li><strong>Data inbound:</strong> X (resyndication, Oct 2024), Reddit (Official Partner, Feb 2026), TikTok, Snapchat, Bluesky/Threads, YouTube, Substack, Dow Jones/WSJ</li>
+        <li>Channel: Global Partner Program (70+ partners — Havas, Dentsu, We Comms)</li>
+        <li><strong>LLMs:</strong> multi-model; Claude/ChatGPT via MCP (interop, not partnership)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="flag">The X (Oct 2024) and Reddit (Feb 2026) data deals double as <strong>defensive moats</strong> — securing compliant enterprise access where smaller rivals got cut off by API-pricing changes.</div>
+</section>
+
+<!-- ===================== SENTIMENT ===================== -->
+<section id="sentiment">
+  <h2>Customer sentiment — strengths &amp; the trust problem</h2>
+  <div class="kpi">
+    <div class="b"><div class="n">4.1★</div><div class="l">G2 (~2,500+ reviews)</div></div>
+    <div class="b"><div class="n">4.0★</div><div class="l">Capterra</div></div>
+    <div class="b"><div class="n">~7.8/10</div><div class="l">TrustRadius</div></div>
+    <div class="b"><div class="n" style="color:var(--red)">1.7★</div><div class="l">Trustpilot ("Bad")</div></div>
+  </div>
+  <div class="flag r"><strong>The single most important finding:</strong> Meltwater scores well as a <em>product</em> (G2 4.1, #1 Media Monitoring) but is rated "Bad" 1.7/5 on Trustpilot — where complaints concentrate on <strong>commercial conduct</strong>, not features. Product satisfaction = decent; <strong>commercial-relationship satisfaction = poor.</strong></div>
+  <div class="grid grid2">
+    <div class="card">
+      <h4 style="color:var(--green)">What users love</h4>
+      <ul>
+        <li>Breadth/comprehensiveness of monitoring</li>
+        <li>Automated daily news alerts &amp; reports</li>
+        <li>Customizable dashboards</li>
+        <li>Customer success / onboarding (when it works)</li>
+        <li>Mira making contact/journalist search easier</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--red)">What users complain about</h4>
+      <ul>
+        <li><strong>Deceptive auto-renewal</strong> — 60-day window "buried in a linked T&amp;C that supersedes the signed contract" (the dominant complaint; one ~May 2025 review alleges a CAD→USD switch +25%)</li>
+        <li>Opaque, high pricing; aggressive lock-in</li>
+        <li><strong>Data accuracy</strong> — missed mentions, stale media DB, mis-tagged sentiment</li>
+        <li>Boolean complexity / learning curve (what Mira targets)</li>
+        <li>Declining support, rep churn (CS reorg Apr 2024)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="flag b"><strong>PM angle:</strong> the highest-leverage AI work isn't more magic — it's using AI to fix <em>data trust</em> and <em>ROI-proof</em>, and de-risking the commercial reputation. A Principal PM who frames it that way stands out.</div>
+  <p class="src">No documented Mira-specific controversy, lawsuit, GDPR fine, or exec exodus found in-window. Legal history (AP v. Meltwater, 2013) is old context only.</p>
+</section>
+
+<!-- ===================== REPORTS ===================== -->
+<section id="reports">
+  <h2>Reports &amp; thought leadership (conversation fuel)</h2>
+  <ul>
+    <li><strong>Digital 2026</strong> (with We Are Social/DataReportal, Oct 2025): internet users passed 6B; social a "supermajority" (5.66B, 68.7%); AI use topped 1B monthly. Notably: <strong>only 14.8% discover brands via AI tools</strong> — AI doesn't yet crack the top 15 discovery sources (a useful counter to GenAI-Lens hype).</li>
+    <li><strong>"Trust in the Age of Generative AI"</strong> (with YouGov, Apr 2026, 10K consumers): 86% say AI content should be disclosed; 32% trust a brand less if content is AI-generated; news/influencer AI acceptance lowest.</li>
+    <li><strong>State of PR 2026</strong> (with We. Communications): 90% using GenAI; 40% still measure activity over outcomes — Meltwater's anchor for the "measure impact not activity" pitch Ant champions.</li>
+    <li><strong>2025/2026 Global State of Social Media</strong>; Marketing Trends; Retail Consumer Insights.</li>
+  </ul>
+  <div class="flag">Bjertnæs (CSO) and Cousins are the public voices; CTO Jami carries the technical narrative ("design for what models will do next, not just today").</div>
+</section>
+
+<!-- ===================== SOURCES ===================== -->
+<section id="sources">
+  <h2>Sources &amp; method</h2>
+  <div class="card">
+    <p>Synthesized from 10+ parallel research agents (and their sub-agents) sweeping primary press releases, developer docs, exec interviews/podcasts, conference recaps, analyst/review sites, and trade press. <strong>Caveat:</strong> many meltwater.com / GlobeNewswire / review-site pages returned HTTP 403 to direct fetch in this environment, so load-bearing facts were extracted from search-result content and cross-checked across multiple independent mirrors. Confidence flags are inline. Verify exact quotes against live pages before external use.</p>
+    <h4>Key primary sources</h4>
+    <div class="two-col src">
+      <p>meltwater.com/en/ai · /products/genai-lens · /about/press-releases/{meltwater-unveils-mira-latest-ai-innovations-in-2025, meltwater-debuts-industry-first-genai-lens, 2026-mid-year-release, meltwater-2025-year-end-product-release..., reddit-partnership, youtube-partnership, chris-hackney-joins-meltwater-as-chief-product-officer, tres-thompson-joins-meltwater-as-chief-financial-officer}</p>
+      <p>developer.meltwater.com/guides/mira-api/{overview, mcp-server} · /docs/meltwater-api/mira-api/{chat-completion, projects}</p>
+      <p>underthehood.meltwater.com (Fairhair.ai, ES scale, RAG/NLP) · community.meltwater.com (release recaps)</p>
+      <p>marlinequity.com · altor.com · globenewswire.com (deal + release mirrors) · verdane.com</p>
+      <p>prweek.com (AI 25: Class of 2026; Cousins hire) · macaubusiness.com (Cousins AI 25) · nationaltribune.com.au</p>
+      <p>cision.com/cisionone + /cisionone-ai · cision.com/about/press-releases/2025 (AI Suite, Trajaan, AI Coverage Analysis)</p>
+      <p>g2.com · trustpilot.com/review/meltwater.com · trustradius.com · capterra.com · gartner.com/reviews</p>
+      <p>datareportal.com (Digital 2025/2026) · yougov.com (AI trust report) · adweek.com (Bjertnæs)</p>
+      <p>zoominfo/rocketreach + uxmag.com + djhilo.medium.com (Napolitano) · theorg.com (org chart) · crunchbase / tracxn / pitchbook</p>
+      <p>sprinklr.com investor releases · hootsuite.com newsroom · cooleyma.com (Talkwalker deal) · brandwatch.com/press</p>
+    </div>
+  </div>
+  <div class="foot">
+    Prepared as internal meeting prep, 24 Jun 2026. Figures flagged <span class="pill conf">confirmed</span> / <span class="pill inf">inference / aggregator</span> inline. Post-2023 financials are estimates (company private). Not for external distribution without verifying quotes against live sources.
+  </div>
+</section>
+
+</main>
+</div>
+</body>
+</html>
